@@ -37,7 +37,7 @@ public class PolicyController {
         System.out.println("Adding policy : "+line);
         // since it is newly added policy, it will not be available in CasbinConfiguration object, we have add now.
         casbinSerivce.addPolicy( policy.getSub(), policy.getDom(), policy.getObj(), policy.getAct(), policy.getEft());
-        System.out.println("Added policy "); 
+        System.out.println("Added policy 22"); 
       
         return ResponseEntity.ok(savedPolicy);
     }
