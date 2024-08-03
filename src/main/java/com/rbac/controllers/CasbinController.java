@@ -11,18 +11,20 @@ public class CasbinController {
 	@Autowired
 	private Enforcer casbinEnforcer; // Inject Casbin Enforcer bean
 
-	 @GetMapping("/checkPermission")
-	    public String checkPermission(
-	            @RequestParam(name = "user") String user,
-	            @RequestParam(name = "resource") String resource,
-	            @RequestParam(name = "object") String object,
-	            @RequestParam(name = "action") String action) {
+	@GetMapping("/checkPermission")
+    public String checkPermission(
+            @RequestParam(name = "user") String user,
+            @RequestParam(name = "resource") String resource,
+            @RequestParam(name = "object") String object,
+            @RequestParam(name = "action") String action
+            ,@RequestParam(name = "eft") String eft
+            ) {
 
-	        // Check permission using injected Casbin Enforcer
-	        boolean enforce = casbinEnforcer.enforce(user, resource, object, action);
-
-	        return enforce ? "Access Granted" : "Access Denied";
-	    }
+        // Check permission using injected Casbin Enforcer
+        boolean enforce = casbinEnforcer.enforce(user, resource, object, action,eft);
+        System.out.println("enforce: ["+user+", "+resource+", "+object+", "+action+", "+eft+" ] = "+enforce);
+        return enforce ? "Access Granted" : "Access Denied";
+    }
 
 	// Additional endpoints for managing policies, roles, etc.
 }
