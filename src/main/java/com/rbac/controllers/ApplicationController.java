@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rbac.beans.DBOperationResponse;
-import com.rbac.beans.RbacConstants;
 import com.rbac.beans.RbacResponse;
 import com.rbac.entity.Application;
 import com.rbac.service.ApplicationService;
