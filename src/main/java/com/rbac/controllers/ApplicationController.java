@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rbac.beans.ApplicationResponse;
 import com.rbac.beans.DBOperationResponse;
+import com.rbac.beans.RbacConstants;
 import com.rbac.beans.RbacResponse;
 import com.rbac.entity.Application;
 import com.rbac.service.ApplicationService;
@@ -24,33 +26,30 @@ public class ApplicationController {
 	@Autowired
 	private ApplicationService applicationService;
 
-	@PostMapping("/application")
+	@PostMapping("/create-app")
 	public RbacResponse configureApplication(@RequestBody Map<String, Object> request) {
-		DBOperationResponse dbRes = applicationService.configureApplication(request);
-		RbacResponse rbacResponse = new RbacResponse();
-		rbacResponse.setStatus(dbRes.getStatus());
-		rbacResponse.setErrorCode(dbRes.getErrorCode());
-		rbacResponse.setResponse(dbRes.getErrorMessage());
-		return rbacResponse; 
+		RbacResponse rbacResponse = applicationService.configureApplication(request);
+		return rbacResponse;
 	}
 
 	@GetMapping("/getallapps")
-	public List<Application> getAllApplications() {
+	public RbacResponse getAllApplications() {
 		return applicationService.getAllApplications();
 	}
 
-	@PostMapping("/create-app")
-	public Application createApplication(@RequestBody Application application) {
-		return applicationService.createApplication(application);
+	@GetMapping("/getappbyid/{id}")
+	public RbacResponse getApplicationById(@PathVariable("id") Long id) {
+		RbacResponse rbacResponse = applicationService.getApplicationById(id);		
+		return rbacResponse;
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteApplication(@PathVariable Long id) {
-		applicationService.deleteApplication(id);
+	public RbacResponse deleteApplication(@PathVariable("id") Long id) {
+		return applicationService.deleteApplication(id);
 	}
 
 	@PutMapping("/{id}")
-	public Application updateApplication(@PathVariable Long id, @RequestBody Application application) {
+	public RbacResponse updateApplication(@PathVariable("id") Long id, @RequestBody Application application) {
 		return applicationService.updateApplication(id, application);
 	}
 }
