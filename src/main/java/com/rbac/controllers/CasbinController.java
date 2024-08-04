@@ -1,8 +1,17 @@
 package com.rbac.controllers;
 
+import java.util.Map;
+
 import org.casbin.jcasbin.main.Enforcer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rbac.service.CasbinService;
 
 @RestController
 @RequestMapping("/api")
@@ -10,7 +19,10 @@ public class CasbinController {
 
 	@Autowired
 	private Enforcer casbinEnforcer; // Inject Casbin Enforcer bean
-
+    
+	@Autowired
+    private CasbinService casbinService;
+    
 	@GetMapping("/checkPermission")
     public String checkPermission(
             @RequestParam(name = "user") String user,
@@ -27,4 +39,10 @@ public class CasbinController {
     }
 
 	// Additional endpoints for managing policies, roles, etc.
+
+    @PostMapping("/configurePolicies")
+    public String configurePolicies(@RequestBody Map<String, Object> request) {
+        casbinService.configurePolicies(request);
+        return "Policies configured successfully";
+    }
 }

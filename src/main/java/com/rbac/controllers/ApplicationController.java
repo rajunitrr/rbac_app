@@ -1,6 +1,7 @@
 package com.rbac.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rbac.beans.DBOperationResponse;
+import com.rbac.beans.RbacConstants;
+import com.rbac.beans.RbacResponse;
 import com.rbac.entity.Application;
 import com.rbac.service.ApplicationService;
 
@@ -20,6 +24,16 @@ import com.rbac.service.ApplicationService;
 public class ApplicationController {
 	@Autowired
 	private ApplicationService applicationService;
+
+	@PostMapping("/application")
+	public RbacResponse configureApplication(@RequestBody Map<String, Object> request) {
+		DBOperationResponse dbRes = applicationService.configureApplication(request);
+		RbacResponse rbacResponse = new RbacResponse();
+		rbacResponse.setStatus(dbRes.getStatus());
+		rbacResponse.setErrorCode(dbRes.getErrorCode());
+		rbacResponse.setResponse(dbRes.getErrorMessage());
+		return rbacResponse; 
+	}
 
 	@GetMapping("/getallapps")
 	public List<Application> getAllApplications() {

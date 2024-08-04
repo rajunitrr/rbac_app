@@ -1,18 +1,21 @@
 package com.rbac.entity;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -32,13 +35,21 @@ public class Application {
     @Column(name = "access_control_model")
     private String accessControlModel;
 
-    @Column(name = "policy")
-    private JsonNode policy;
+	/*
+	 * @Column(name = "policy") private JsonNode policy;
+	 * 
+	 * @Column(name = "others", columnDefinition = "jsonb")
+	 * 
+	 * @Convert(converter = JsonNodeConverter.class) private JsonNode others;
+	 */
 
-    @Column(name = "others", columnDefinition = "jsonb")
-    @Convert(converter = JsonNodeConverter.class)
-    private JsonNode others;
-
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "application_id")
+    private List<Policy> policies;
+ 
+    private String others;
+    
     @Converter(autoApply = true)
     public static class JsonNodeConverter implements AttributeConverter<JsonNode, String> {
         private static final ObjectMapper objectMapper = new ObjectMapper();

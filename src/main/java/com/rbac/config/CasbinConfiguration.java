@@ -45,4 +45,10 @@ public class CasbinConfiguration {
 	public boolean addPolicy(String sub, String dom, String obj, String act, String eft) {
 		return enforcer.addPolicy(sub, dom, obj, act, eft);
 	}
+
+	public Enforcer getEnforcer() {
+		return enforcer;
+	}
+ 
+	
 }
